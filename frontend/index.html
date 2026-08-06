@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leady</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffb703">
+</head>
+
+<body>
+    <main class="hero">
+        <section class="container">
+            <div class="hero-card">
+                <span class="badge-leady">Oportunidades juveniles con IA</span>
+                <h1>Descubrí oportunidades que sí van contigo.</h1>
+                <p>
+                    Leady conecta jóvenes paraguayos con becas, intercambios,
+                    voluntariados, organizaciones y programas de liderazgo.
+                </p>
+                <div class="hero-buttons">
+                    <a href="register.html" class="btn-primary-leady text-decoration-none">Crear cuenta</a>
+                    <a href="login.html" class="btn-secondary-leady text-decoration-none">Iniciar sesión</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Supabase + auth para que el navbar detecte sesión -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navbar.js"></script>
+</body>
+</html>

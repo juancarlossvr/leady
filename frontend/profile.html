@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil - Leady</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CROPPER.JS CSS (Editor de fotos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffb703">
+    <script src="js/streaks.js"></script>
+</head>
+
+<body>
+    <main class="container-xl py-4">
+
+        <!-- CABECERA DEL PERFIL SOCIAL CON FOTO -->
+        <section class="detail-card mb-4 position-relative overflow-hidden p-4 p-md-5">
+            <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
+                
+                <!-- CONTENEDOR DEL AVATAR CON BOTÓN DE CÁMARA -->
+                <div class="position-relative flex-shrink-0">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center overflow-hidden" 
+                         style="width: 110px; height: 110px; background: var(--surface-2); border: 3px solid var(--sol); color: var(--sol); font-size: 2.2rem; font-family: 'Clash Display', sans-serif; font-weight: 700;"
+                         id="profile-avatar-container">
+                        <span id="profile-avatar-text">--</span>
+                    </div>
+
+                    <!-- Botón flotante para subir foto -->
+                    <label for="avatar-file-input" 
+                           class="position-absolute bottom-0 end-0 rounded-circle d-flex align-items-center justify-content-center cursor-pointer shadow"
+                           style="width: 36px; height: 36px; background: var(--sol); color: #000; border: 2px solid var(--surface); cursor: pointer;"
+                           title="Cambiar foto de perfil">
+                        <i class="ph ph-camera-plus fs-5"></i>
+                    </label>
+
+                    <!-- Input invisible que activa el editor de fotos -->
+                    <input type="file" id="avatar-file-input" accept="image/*" class="d-none" onchange="handleAvatarSelect(event)">
+                </div>
+
+                <!-- INFO PRINCIPAL DEL USUARIO -->
+                <div class="flex-grow-1 text-center text-md-start">
+                    <div class="d-flex flex-column flex-md-row align-items-center gap-3 mb-2">
+                        <h1 class="m-0 fs-2" id="view-full-name">Cargando usuario...</h1>
+                        <span class="badge-leady" id="view-academic-level"><i class="ph ph-graduation-cap me-1"></i> Sin datos</span>
+                    </div>
+
+                    <p class="text-secondary mb-3 fs-6" id="view-username">@usuario</p>
+
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 text-secondary style-sm" style="font-size: 0.9rem;">
+                        <span id="view-location"><i class="ph ph-map-pin me-1 text-warning"></i>Sin ubicación</span>
+                        <span id="view-age"><i class="ph ph-identification-card me-1 text-warning"></i>-- años</span>
+                        <span id="view-average"><i class="ph ph-chart-bar me-1 text-warning"></i>Promedio: --</span>
+                    </div>
+                    
+                    <!-- Mensaje de estado de subida -->
+                    <p id="avatar-upload-status" class="api-status mt-2 mb-0" style="font-size: 0.85rem;"></p>
+                </div>
+
+                <!-- BOTÓN EDITAR PERFIL -->
+                <button class="btn-secondary-leady py-2 px-3 flex-shrink-0" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                    <i class="ph ph-pencil-line me-1"></i> Editar perfil
+                </button>
+            </div>
+        </section>
+
+        <!-- INDICADORES DE IMPACTO / ESTADÍSTICAS -->
+        <section class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-4 text-center" style="background: var(--surface); border: 1px solid var(--border);">
+                    <h2 class="m-0 text-warning fw-bold fs-3" id="stat-favorites">0</h2>
+                    <small class="text-secondary">Oportunidades guardadas</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-4 text-center" style="background: var(--surface); border: 1px solid var(--border);">
+                    <h2 class="m-0 text-warning fw-bold fs-3" id="stat-posts">0</h2>
+                    <small class="text-secondary">Publicaciones en La Plaza</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-4 text-center" style="background: var(--surface); border: 1px solid var(--border);">
+                    <h2 class="m-0 text-warning fw-bold fs-3" id="stat-likes">0</h2>
+                    <small class="text-secondary">Aguyjé recibidos</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-4 text-center" style="background: var(--surface); border: 1px solid var(--border);">
+                    <h2 class="m-0 text-warning fw-bold fs-3" id="stat-badges">0 / 4</h2>
+                    <small class="text-secondary">Insignias logradas</small>
+                </div>
+            </div>
+        </section>
+
+        <div class="row g-4">
+            <!-- GALERÍA DE INSIGNIAS -->
+            <div class="col-lg-7">
+                <section class="p-4 rounded-4 h-100" style="background: var(--surface); border: 1px solid var(--border);">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="m-0 fs-5"><i class="ph ph-trophy text-warning me-2"></i>Insignias y Medallas</h3>
+                    </div>
+                    <div class="row g-3" id="badges-container">
+                        <p class="text-secondary"><span class="spinner-border spinner-border-sm me-2"></span>Cargando insignias...</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- INTERESES Y BIOGRAFÍA -->
+            <div class="col-lg-5">
+                <div class="d-flex flex-column gap-4">
+                    <section class="p-4 rounded-4" style="background: var(--surface); border: 1px solid var(--border);">
+                        <h3 class="m-0 fs-5 mb-3"><i class="ph ph-tag text-warning me-2"></i>Intereses e Idiomas</h3>
+                        <p class="text-secondary style-sm mb-1">Idiomas:</p>
+                        <div class="d-flex flex-wrap gap-2 mb-3" id="view-languages-tags">
+                            <span class="text-secondary fs-6">Sin especificar</span>
+                        </div>
+                        <p class="text-secondary style-sm mb-1">Intereses:</p>
+                        <div class="d-flex flex-wrap gap-2" id="view-interests-tags">
+                            <span class="text-secondary fs-6">Sin especificar</span>
+                        </div>
+                    </section>
+
+                    <section class="p-4 rounded-4" style="background: var(--surface); border: 1px solid var(--border);">
+                        <h3 class="m-0 fs-5 mb-2"><i class="ph ph-user-text text-warning me-2"></i>Biografía y Experiencia</h3>
+                        <p class="text-light m-0 style-sm" style="line-height: 1.6; white-space: pre-line;" id="view-experience">
+                            Aún no agregaste información sobre tu experiencia. Tocá en "Editar perfil" para completar tu presentación.
+                        </p>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MODAL POPUP PARA EDITAR PERFIL -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="background: var(--surface); border: 1px solid var(--border); color: #fff;">
+                <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+                    <h5 class="modal-title"><i class="ph ph-pencil-line text-warning me-2"></i>Editar mi información</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                
+                <form class="profile-form" onsubmit="updateProfile(event)">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre y apellido *</label>
+                                <input type="text" id="profile-full-name" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Usuario *</label>
+                                <input type="text" id="profile-username" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de nacimiento *</label>
+                                <input type="date" id="profile-birth-date" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Edad *</label>
+                                <input type="number" id="profile-age" class="form-control" min="13" max="25" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Ciudad *</label>
+                                <input type="text" id="profile-city" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Departamento *</label>
+                                <input type="text" id="profile-department" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nivel académico *</label>
+                                <select id="profile-academic-level" class="form-control" required>
+                                    <option value="">Seleccionar</option>
+                                    <option value="Educación Escolar Básica">Educación Escolar Básica</option>
+                                    <option value="Secundaria">Secundaria</option>
+                                    <option value="Bachillerato Técnico">Bachillerato Técnico</option>
+                                    <option value="Universidad">Universidad</option>
+                                    <option value="Egresado">Egresado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Promedio académico</label>
+                                <input type="number" id="profile-academic-average" class="form-control" min="1" max="5" step="0.01">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Idiomas (separados por coma)</label>
+                                <input type="text" id="profile-languages" class="form-control" placeholder="Español, Inglés, Guaraní">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Intereses (separados por coma)</label>
+                                <input type="text" id="profile-interests" class="form-control" placeholder="Liderazgo, becas, tecnología">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Experiencia y Biografía</label>
+                                <textarea id="profile-experience" class="form-control" rows="4" placeholder="Contá brevemente tu experiencia en organizaciones, voluntariados, proyectos, etc."></textarea>
+                            </div>
+                        </div>
+                        <p id="profile-status" class="api-status mt-3 mb-0"></p>
+                    </div>
+
+                    <div class="modal-footer" style="border-top: 1px solid var(--border);">
+                        <button type="button" class="btn-secondary-leady py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn-primary-leady py-2 px-4">
+                            <i class="ph ph-floppy-disk me-1"></i> Guardar cambios
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL RECORTADOR DE FOTO DE PERFIL (CROPPER) -->
+    <div class="modal fade" id="cropAvatarModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--surface); border: 1px solid var(--border); color: #fff;">
+                <div class="modal-header" style="border-bottom: 1px solid var(--border);">
+                    <h5 class="modal-title"><i class="ph ph-crop text-warning me-2"></i>Ajustar foto de perfil</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 text-center">
+                    <div style="max-height: 380px; overflow: hidden; background: #000; border-radius: 8px;">
+                        <img id="crop-image-target" src="" alt="Vista previa" style="max-width: 100%; display: block;">
+                    </div>
+                    <small class="text-secondary mt-2 d-block"><i class="ph ph-hand-swipe-left me-1"></i>Arrastrá y encuadrá tu rostro antes de aplicar.</small>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid var(--border);">
+                    <button type="button" class="btn-secondary-leady py-2 px-3" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn-primary-leady py-2 px-4" onclick="saveCroppedAvatar()">
+                        <i class="ph ph-check me-1"></i> Guardar y aplicar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- CROPPER.JS JS (Librería de recorte) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        protectPage().then(user => {
+            if (user) loadProfile();
+        });
+    </script>
+</body>
+</html>

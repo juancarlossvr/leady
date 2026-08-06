@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Leady</title>
+    <!-- Bootstrap 5.3.3 CSS (Versión Oficial y Estable) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Phosphor Icons CDN -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffb703">
+    <script src="js/streaks.js"></script>
+</head>
+
+<body>
+    <main class="container-xl py-4">
+
+        <!-- 1. HERO Y SALUDO MULTILINGÜE -->
+        <section class="p-4 p-md-5 rounded-4 mb-4 position-relative overflow-hidden" 
+                 style="background: var(--surface); border: 1px solid var(--border);">
+            <div class="row align-items-center position-relative" style="z-index: 2;">
+                <div class="col-lg-8">
+                    <span class="badge-leady mb-2"><i class="ph ph-sparkle me-1"></i> Panel Principal</span>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <h1 class="m-0 fs-2 fw-bold">
+                            <span id="dynamic-greeting-text" class="greeting-animated text-warning">¡Mba'éichapa!</span>
+                        </h1>
+                        <span id="dynamic-greeting-lang" class="badge bg-secondary bg-opacity-25 text-secondary style-sm px-2 py-1 rounded-pill">
+                            Guaraní 🇵🇾
+                        </span>
+                    </div>
+                    <p class="text-secondary mb-1">Acá tenés un resumen de tus oportunidades y avances de hoy.</p>
+                    <p class="text-secondary mb-3 style-sm" id="user-info">Cargando tus datos...</p>
+                    
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <a href="profile.html" class="btn-primary-leady text-decoration-none py-2 px-3">
+                            <i class="ph ph-user-gear me-1"></i> Mi perfil
+                        </a>
+                        <a href="opportunities.html" class="btn-secondary-leady text-decoration-none py-2 px-3">
+                            <i class="ph ph-compass me-1"></i> Explorar todo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <img src="assets/img/leady-logo.png" 
+                         alt="Mascota Leady" 
+                         class="img-fluid" 
+                         style="max-height: 150px; filter: drop-shadow(0 8px 16px rgba(37, 99, 216, 0.3));">
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. FILA DE MÉTRICAS / STATS -->
+        <section class="row g-3 mb-5">
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 d-flex align-items-center gap-3" style="background: var(--surface); border: 1px solid var(--border);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: var(--sol-soft); color: var(--sol); font-size: 1.2rem;">
+                        <i class="ph ph-bookmark-simple"></i>
+                    </div>
+                    <div>
+                        <span class="d-block text-secondary" style="font-size: 0.78rem; font-weight: 600;">GUARDADAS</span>
+                        <strong class="fs-5 text-white" id="stat-favorites-count">0</strong>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 d-flex align-items-center gap-3" style="background: var(--surface); border: 1px solid var(--border);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: var(--gua-soft); color: var(--gua-claro); font-size: 1.2rem;">
+                        <i class="ph ph-robot"></i>
+                    </div>
+                    <div>
+                        <span class="d-block text-secondary" style="font-size: 0.78rem; font-weight: 600;">MATCHES IA</span>
+                        <strong class="fs-5 text-white">4 activas</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 d-flex align-items-center gap-3" style="background: var(--surface); border: 1px solid var(--border);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: rgba(74, 157, 95, 0.15); color: var(--selva); font-size: 1.2rem;">
+                        <i class="ph ph-seal-check"></i>
+                    </div>
+                    <div>
+                        <span class="d-block text-secondary" style="font-size: 0.78rem; font-weight: 600;">COMPATIBILIDAD</span>
+                        <strong class="fs-5 text-white">Hasta 85%</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="p-3 rounded-3 d-flex align-items-center gap-3" style="background: var(--surface); border: 1px solid var(--border);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; background: rgba(224, 81, 47, 0.15); color: var(--ceibo); font-size: 1.2rem;">
+                        <i class="ph ph-clock"></i>
+                    </div>
+                    <div>
+                        <span class="d-block text-secondary" style="font-size: 0.78rem; font-weight: 600;">URGENTES</span>
+                        <strong class="fs-5 text-white">Cierran pronto</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. OPORTUNIDADES GUARDADAS -->
+        <section class="mb-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="dashboard-section-title m-0"><i class="ph ph-bookmark-star text-warning me-2"></i>Oportunidades guardadas</h2>
+            </div>
+            <div id="favorites-container" class="row g-4">
+                <p class="text-secondary">Cargando oportunidades guardadas...</p>
+            </div>
+        </section>
+
+        <hr class="my-5" style="border-color: var(--border);">
+
+        <!-- 4. RECOMENDADAS PARA VOS -->
+        <section class="mb-5">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                <div>
+                    <h2 class="dashboard-section-title m-0"><i class="ph ph-magic-wand text-primary me-2"></i>Recomendadas para vos</h2>
+                    <p class="text-secondary m-0" style="font-size: 0.9rem;">Ordenadas según tu edad, intereses, idiomas y datos académicos por IA.</p>
+                </div>
+            </div>
+
+            <div id="recommendations-container" class="row g-4 mt-1">
+                <p class="text-secondary">Cargando recomendaciones...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Supabase y autenticación -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    
+    <!-- Bootstrap 5.3.3 JS Bundle (Con Popper.js incluido, versión real y activa) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/recommendations.js"></script>
+    
+    <!-- INICIALIZACIÓN COMPLETA -->
+    <script>
+        protectPage().then(user => { 
+            if (user) {
+                loadCurrentUser(); 
+                if (typeof loadRecommendations === "function") {
+                    loadRecommendations();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

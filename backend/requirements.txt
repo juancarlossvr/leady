@@ -1,0 +1,14 @@
+# ===== Backend / API =====
+fastapi
+uvicorn
+python-dotenv
+supabase
+openai
+pyjwt          
+
+# ===== Scraper =====
+requests
+beautifulsoup4
+lxml
+rapidfuzz      
+apify-client   

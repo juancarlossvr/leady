@@ -1,0 +1,17 @@
+# Entornos virtuales de Python
+venv/
+env/
+.venv/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+
+# Variables de entorno (¡NUNCA SUBIR A GITHUB!)
+.env
+backend/.env
+
+# Archivos del sistema y editores
+.DS_Store
+.vscode/
+.idea/
