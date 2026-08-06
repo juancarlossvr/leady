@@ -112,8 +112,8 @@ async function saveCroppedAvatar() {
             // Actualizar URL en la tabla
             const { error: profileError } = await supabaseClient
                 .from('users_profiles')
-                .update({ avatar_url: avatarUrl })
-                .eq('id', userId);
+                .upsert({ id: userId, avatar_url: avatarUrl }) // Aseguramos usar upsert para evitar fallos si el registro no existe
+                .select();
 
             if (profileError) throw new Error(`Base de Datos: ${profileError.message}`);
 
@@ -226,8 +226,8 @@ async function loadProfile() {
         supabaseClient.from("user_interests").select("interest").eq("user_id", user.id)
     ]);
 
-    const { data: profile } = profileResult;
-    if (!profile) return;
+    // CORRECCIÓN 1: Si no hay perfil, creamos un objeto vacío en lugar de detener la función con un return
+    const profile = profileResult.data || {};
 
     // AHORA SÍ LLAMAMOS A RENDERAVATAR PARA DIBUJAR LA FOTO EN PANTALLA
     renderAvatar(profile.avatar_url, profile.full_name);
@@ -248,9 +248,9 @@ async function loadProfile() {
     }
 
     // Renderizar Tags de Intereses
-    const { data: interests } = interestsResult;
+    const interests = interestsResult.data || [];
     const intContainer = document.getElementById("view-interests-tags");
-    if (intContainer && interests && interests.length > 0) {
+    if (intContainer && interests.length > 0) {
         intContainer.innerHTML = interests.map(i => `<span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 px-3 py-2 fw-normal">${i.interest}</span>`).join("");
     }
 
@@ -265,7 +265,7 @@ async function loadProfile() {
     if (document.getElementById("profile-academic-average")) document.getElementById("profile-academic-average").value = profile.academic_average || "";
     if (document.getElementById("profile-experience")) document.getElementById("profile-experience").value = profile.experience || "";
     if (document.getElementById("profile-languages")) document.getElementById("profile-languages").value = profile.languages ? profile.languages.join(", ") : "";
-    if (interests && document.getElementById("profile-interests")) document.getElementById("profile-interests").value = interests.map(item => item.interest).join(", ");
+    if (document.getElementById("profile-interests")) document.getElementById("profile-interests").value = interests.map(item => item.interest).join(", ");
 }
 
 async function updateProfile(event) {
@@ -289,8 +289,11 @@ async function updateProfile(event) {
     const city = document.getElementById("profile-city")?.value || "";
     const department = document.getElementById("profile-department")?.value || "";
     const academicLevel = document.getElementById("profile-academic-level")?.value || "";
+    
+    // CORRECCIÓN 2: Reemplazamos la coma por punto para evitar el error NaN
     const academicAverageValue = document.getElementById("profile-academic-average")?.value;
-    const academicAverage = academicAverageValue ? Number(academicAverageValue) : null;
+    const academicAverage = academicAverageValue ? Number(academicAverageValue.replace(',', '.')) : null;
+    
     const experience = document.getElementById("profile-experience")?.value || "";
     const languages = textToArray(document.getElementById("profile-languages")?.value || "");
     const interests = textToArray(document.getElementById("profile-interests")?.value || "");

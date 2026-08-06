@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://api.leady.online";
 
 async function probarBackend() {
     const statusText = document.getElementById("api-status");

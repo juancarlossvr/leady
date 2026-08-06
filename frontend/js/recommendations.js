@@ -2,7 +2,7 @@
 // recommendations.js — Motor de Recomendaciones y Mentor IA Leady
 // =========================================================================
 
-const RECOMMENDATIONS_API_URL = "http://127.0.0.1:8000";
+const RECOMMENDATIONS_API_URL = "https://api.leady.online";
 
 let userFavoriteIds = new Set();
 let cachedUserProfile = null;

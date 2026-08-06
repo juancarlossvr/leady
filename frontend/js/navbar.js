@@ -129,7 +129,7 @@ async function checkIsOwner() {
         const token = data.session?.access_token;
         if (!token) return false;
 
-        const res = await fetch("http://127.0.0.1:8000/admin/me", {
+        const res = await fetch("https://api.leady.online/admin/me", {
             headers: { "Authorization": `Bearer ${token}` }
         });
         return res.ok;
