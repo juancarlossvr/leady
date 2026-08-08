@@ -25,8 +25,14 @@ async function registerUser() {
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
+    const birthDate = document.getElementById("birth_date").value;
     const status = document.getElementById("register-status");
 
+    if (!birthDate) {
+        status.textContent = "Por favor, completá tu fecha de nacimiento.";
+        return;
+    }
+    
     status.textContent = "Creando cuenta...";
 
     try {
@@ -49,7 +55,8 @@ async function registerUser() {
                 {
                     id: user.id,
                     full_name: fullName,
-                    username: username
+                    username: username,
+                    birth_date: birthDate
                 }
             ]);
 
