@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Leady</title>
+    <title>Crear cuenta - Leady</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/register-wizard.css">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#ffb703">
 </head>
@@ -15,24 +16,140 @@
 <body>
     <main class="hero">
         <section class="container">
-            <div class="hero-card">
-                <h1>Crear cuenta</h1>
-                <div class="mt-4">
-                    <input type="text" id="full_name" class="form-control mb-3" placeholder="Nombre completo">
-                    <input type="text" id="username" class="form-control mb-3" placeholder="Usuario">
-                    <input type="email" id="email" class="form-control mb-3" placeholder="Correo electrónico">
-                    <input type="password" id="password" class="form-control mb-3" placeholder="Contraseña">
-                    <div class="mb-3">
-                        <label for="birth_date" class="form-label text-start w-100" style="font-size: 0.85rem; color: #ccc;">Fecha de nacimiento</label>
-                        <input type="date" id="birth_date" class="form-control" required>
-                    </div>
-                    <button class="btn-primary-leady w-100" onclick="registerUser()">Registrarse</button>
-                    <p id="register-status" class="api-status mt-3"></p>
-                    <p class="auth-switch mt-3">
-                        ¿Ya tenés cuenta?
-                        <a href="login.html">Iniciar sesión</a>
-                    </p>
+            <div class="hero-card wizard-card">
+
+                <div class="wizard-step-label">
+                    <span>Paso <strong id="wizard-step-number">1</strong> de 5</span>
+                    <span id="wizard-step-name">Tu cuenta</span>
                 </div>
+                <div class="wizard-progress-track">
+                    <div class="wizard-progress-fill" id="wizard-progress-fill"></div>
+                </div>
+
+                <form id="wizard-form" onsubmit="return false;">
+                    <div class="wizard-viewport">
+                        <div class="wizard-track" id="wizard-track">
+
+                            <!-- PASO 1: CUENTA -->
+                            <div class="wizard-step is-active" data-step="1">
+                                <h1 class="wizard-step-title">Creemos tu cuenta</h1>
+                                <p class="wizard-step-hint">Con esto vas a poder iniciar sesión en Leady.</p>
+
+                                <input type="email" id="w-email" class="form-control mb-3" placeholder="Correo electrónico" autocomplete="email">
+                                <input type="password" id="w-password" class="form-control mb-3" placeholder="Contraseña (mínimo 6 caracteres)" autocomplete="new-password">
+                                <input type="password" id="w-password-confirm" class="form-control" placeholder="Repetí tu contraseña" autocomplete="new-password">
+                            </div>
+
+                            <!-- PASO 2: DATOS PERSONALES -->
+                            <div class="wizard-step" data-step="2">
+                                <h1 class="wizard-step-title">Contanos sobre vos</h1>
+                                <p class="wizard-step-hint">Así te mostramos a otros socios y personalizamos tu experiencia.</p>
+
+                                <input type="text" id="w-full-name" class="form-control mb-3" placeholder="Nombre y apellido">
+                                <input type="text" id="w-username" class="form-control mb-3" placeholder="Nombre de usuario">
+
+                                <div class="row g-3 mb-1">
+                                    <div class="col-6">
+                                        <label class="form-label text-start w-100">Fecha de nacimiento</label>
+                                        <input type="date" id="w-birth-date" class="form-control">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label text-start w-100">Ciudad</label>
+                                        <input type="text" id="w-city" class="form-control" placeholder="Encarnación">
+                                    </div>
+                                </div>
+                                <div id="wizard-age-preview" class="wizard-age-preview"></div>
+
+                                <label class="form-label text-start w-100 mt-2">Departamento</label>
+                                <select id="w-department" class="form-control">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Asunción (Capital)">Asunción (Capital)</option>
+                                    <option value="Alto Paraguay">Alto Paraguay</option>
+                                    <option value="Alto Paraná">Alto Paraná</option>
+                                    <option value="Amambay">Amambay</option>
+                                    <option value="Boquerón">Boquerón</option>
+                                    <option value="Caaguazú">Caaguazú</option>
+                                    <option value="Caazapá">Caazapá</option>
+                                    <option value="Canindeyú">Canindeyú</option>
+                                    <option value="Central">Central</option>
+                                    <option value="Concepción">Concepción</option>
+                                    <option value="Cordillera">Cordillera</option>
+                                    <option value="Guairá">Guairá</option>
+                                    <option value="Itapúa">Itapúa</option>
+                                    <option value="Misiones">Misiones</option>
+                                    <option value="Ñeembucú">Ñeembucú</option>
+                                    <option value="Paraguarí">Paraguarí</option>
+                                    <option value="Presidente Hayes">Presidente Hayes</option>
+                                    <option value="San Pedro">San Pedro</option>
+                                </select>
+                            </div>
+
+                            <!-- PASO 3: ACADÉMICO -->
+                            <div class="wizard-step" data-step="3">
+                                <h1 class="wizard-step-title">Tu perfil académico</h1>
+                                <p class="wizard-step-hint">Nos ayuda a filtrar oportunidades que realmente apliquen a vos.</p>
+
+                                <label class="form-label text-start w-100">Nivel académico</label>
+                                <select id="w-academic-level" class="form-control mb-3">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Educación Escolar Básica">Educación Escolar Básica</option>
+                                    <option value="Secundaria">Secundaria</option>
+                                    <option value="Bachillerato Técnico">Bachillerato Técnico</option>
+                                    <option value="Universidad">Universidad</option>
+                                    <option value="Egresado">Egresado</option>
+                                </select>
+
+                                <label class="form-label text-start w-100">Promedio académico (opcional)</label>
+                                <input type="number" id="w-academic-average" class="form-control" min="1" max="5" step="0.01" placeholder="Ej: 4.2">
+                            </div>
+
+                            <!-- PASO 4: INTERESES / IDIOMAS / BIO (usado por la IA) -->
+                            <div class="wizard-step" data-step="4">
+                                <h1 class="wizard-step-title">Lo que te mueve</h1>
+                                <p class="wizard-step-hint">Esto es lo que usa nuestra IA para calcular tu % de compatibilidad con cada oportunidad.</p>
+
+                                <label class="form-label text-start w-100">Idiomas</label>
+                                <div class="chip-input-box mb-2" id="w-languages-box">
+                                    <input type="text" id="w-languages-input" placeholder="Escribí y presioná Enter, o elegí abajo">
+                                </div>
+                                <div class="chip-suggestions mb-3" id="w-languages-suggestions"></div>
+
+                                <label class="form-label text-start w-100">Intereses</label>
+                                <div class="chip-input-box mb-2" id="w-interests-box">
+                                    <input type="text" id="w-interests-input" placeholder="Escribí y presioná Enter, o elegí abajo">
+                                </div>
+                                <div class="chip-suggestions mb-3" id="w-interests-suggestions"></div>
+
+                                <label class="form-label text-start w-100">Contanos brevemente tu experiencia (opcional)</label>
+                                <textarea id="w-experience" class="form-control" rows="3" placeholder="Voluntariados, proyectos, organizaciones..."></textarea>
+                            </div>
+
+                            <!-- PASO 5: CONFIRMAR -->
+                            <div class="wizard-step" data-step="5">
+                                <h1 class="wizard-step-title">Revisá tus datos</h1>
+                                <p class="wizard-step-hint">Si algo no está bien, volvé atrás y corregilo.</p>
+
+                                <div id="wizard-summary" class="mb-3"></div>
+                                <p id="register-status" class="api-status mb-0"></p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="wizard-nav">
+                        <button type="button" id="wizard-back-btn" class="btn-secondary-leady py-2 px-3 btn-back" onclick="wizardBack()">
+                            <i class="ph ph-arrow-left me-1"></i> Atrás
+                        </button>
+                        <button type="button" id="wizard-next-btn" class="btn-primary-leady py-2 px-4 ms-auto" onclick="wizardNext()">
+                            Siguiente <i class="ph ph-arrow-right ms-1"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <p class="auth-switch mt-3">
+                    ¿Ya tenés cuenta?
+                    <a href="login.html">Iniciar sesión</a>
+                </p>
             </div>
         </section>
     </main>
@@ -40,5 +157,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="js/auth.js"></script>
     <script src="js/navbar.js"></script>
+    <script src="js/register-wizard.js"></script>
 </body>
 </html>

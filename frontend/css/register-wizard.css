@@ -1,0 +1,231 @@
+/* ============================================================
+   LEADY — Wizard de registro (onboarding multi-paso)
+   Consume los tokens definidos en styles.css, no define ninguno propio.
+   ============================================================ */
+
+.wizard-card {
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Barra de progreso — mismo lenguaje visual que .compatibility-bar */
+.wizard-progress-track {
+    height: 6px;
+    border-radius: var(--border-radius-pill);
+    background: var(--background-secondary);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+}
+
+.wizard-progress-fill {
+    height: 100%;
+    width: 20%;
+    background: var(--sol);
+    border-radius: var(--border-radius-pill);
+    transition: width 0.45s var(--ease-smooth);
+}
+
+.wizard-step-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.wizard-step-label strong {
+    color: var(--sol);
+    font-weight: 600;
+}
+
+/* Viewport que recorta los pasos */
+.wizard-viewport {
+    overflow: hidden;
+    position: relative;
+}
+
+.wizard-track {
+    display: flex;
+    width: 500%;
+    transition: transform 0.5s var(--ease-smooth);
+}
+
+.wizard-step {
+    width: 20%;
+    flex-shrink: 0;
+    padding: 0.25rem 0.1rem;
+    opacity: 0;
+    transition: opacity 0.35s ease 0.1s;
+}
+
+.wizard-step.is-active {
+    opacity: 1;
+}
+
+.wizard-step-title {
+    font-family: 'Clash Display', sans-serif;
+    font-weight: 600;
+    font-size: 1.35rem;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.wizard-step-hint {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.wizard-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+}
+
+.wizard-nav .btn-back {
+    visibility: hidden;
+}
+
+.wizard-nav .btn-back.is-visible {
+    visibility: visible;
+}
+
+/* Chips (idiomas / intereses) — mismo look que .form-control */
+.chip-input-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.5rem;
+    border: 1px solid var(--border-2);
+    border-radius: var(--border-radius-md);
+    background: var(--background-secondary);
+    transition: border-color 0.2s var(--ease-smooth);
+}
+
+.chip-input-box:focus-within {
+    border-color: var(--gua-claro);
+    box-shadow: 0 0 0 3px var(--gua-soft);
+}
+
+.chip-input-box input {
+    flex: 1;
+    min-width: 120px;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: var(--text-primary);
+    padding: 0.25rem;
+    font-family: inherit;
+}
+
+.chip-input-box input::placeholder {
+    color: var(--dim);
+}
+
+.chip-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--sol-soft);
+    color: var(--sol);
+    border: 1px solid var(--border-sol);
+    border-radius: var(--border-radius-pill);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.85rem;
+}
+
+.chip-pill button {
+    background: none;
+    border: none;
+    color: inherit;
+    line-height: 1;
+    padding: 0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.chip-pill button:hover {
+    opacity: 1;
+}
+
+/* Chips sugeridos — se pueden tocar para agregar/quitar sin escribir */
+.chip-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.chip-suggestion {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--border-radius-pill);
+    border: 1px solid var(--border-2);
+    background: var(--background-secondary);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-smooth);
+}
+
+.chip-suggestion:hover {
+    border-color: var(--border-sol);
+    color: var(--sol);
+}
+
+.chip-suggestion.is-selected {
+    background: var(--sol);
+    border-color: var(--sol);
+    color: var(--yvy);
+}
+
+.chip-suggestion.is-selected::before {
+    content: "\2713";
+    font-weight: 700;
+}
+
+.wizard-age-preview {
+    font-size: 0.85rem;
+    color: var(--sol);
+    margin-top: 0.35rem;
+    min-height: 1.1rem;
+}
+
+/* Resumen (paso 5) */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+.summary-row span:first-child {
+    color: var(--text-muted);
+}
+
+.summary-row span:last-child {
+    color: var(--text-primary);
+    text-align: right;
+    max-width: 60%;
+    font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wizard-track, .wizard-progress-fill, .wizard-step {
+        transition: none !important;
+    }
+}
